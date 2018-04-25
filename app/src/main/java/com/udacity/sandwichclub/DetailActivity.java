@@ -13,6 +13,8 @@ import com.udacity.sandwichclub.utils.JsonUtils;
 
 import junit.framework.Test;
 
+import java.util.List;
+
 public class DetailActivity extends AppCompatActivity {
 
     public static final String EXTRA_POSITION = "extra_position";
@@ -69,13 +71,38 @@ public class DetailActivity extends AppCompatActivity {
         Toast.makeText(this, R.string.detail_error_message, Toast.LENGTH_SHORT).show();
     }
 
+    private String listToString(List<String> list) {
+        StringBuilder stringBuilder = new StringBuilder();
+        for (String item : list) {
+            stringBuilder.append(item).append("\n");
+        }
+        return stringBuilder.toString();
+    }
+
     private void populateUI(Sandwich sandwich) {
         mMainName.setText(sandwich.getMainName());
-        String replaceAlso = sandwich.getAlsoKnownAs().toString().replaceAll("\\[","").replaceAll("\\]","");
+        String replaceAlso = listToString(sandwich.getAlsoKnownAs());
         mAlsoKnownAs.setText(replaceAlso);
         mPlaceOfOrigin.setText(sandwich.getPlaceOfOrigin());
         mDescription.setText(sandwich.getDescription());
-        String replaceIngredients = sandwich.getIngredients().toString().replaceAll("\\[","").replaceAll("\\]","");
+        String replaceIngredients = listToString(sandwich.getIngredients());
         mIngredients.setText(replaceIngredients);
+
+        if(replaceAlso.equals(""))
+        {
+            mAlsoKnownAs.setText(getResources().getText(R.string.detail_no_data));
+        }
+        if(sandwich.getDescription().equals(""))
+        {
+            mDescription.setText(getResources().getText(R.string.detail_no_data));
+        }
+        if(sandwich.getPlaceOfOrigin().equals(""))
+        {
+            mPlaceOfOrigin.setText(getResources().getText(R.string.detail_no_data));
+        }
+        if(replaceIngredients.equals(""))
+        {
+            mIngredients.setText(getResources().getText(R.string.detail_no_data));
+        }
     }
 }
